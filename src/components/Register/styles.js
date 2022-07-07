@@ -21,7 +21,9 @@ export default makeStyles((theme) => ({
         padding:'10px 20px',
         borderRadius:'20px',
         margin:'0 auto',
-        maxWidth:'600px'
+        maxWidth:'600px',
+        border: "none",
+        boxShadow: "none"
     },
     formTitle : {
         fontSize:'22px',
@@ -82,6 +84,11 @@ export default makeStyles((theme) => ({
 
     alreadyAccountsContainer : {
         padding:'50px 0 0'
+    },
+
+    success : {
+        textAlign:'center',
+        padding:'100px 0'
     },
 
     errorMessage : {

@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import useStyles from '../Register/styles';
-import {useNavigate} from 'react-router-dom';
-import {FaFacebook, FaGithub, FaGoogle} from 'react-icons/fa'
+import {useNavigate, Link, useLocation} from 'react-router-dom';
+import {FaFacebook, FaGithub, FaGoogle} from 'react-icons/fa';
 import { 
   Button, 
   Box, 
@@ -14,16 +14,22 @@ import {
   IconButton,
   Divider,
 } from '@mui/material';
-import {AiOutlineEye, AiOutlineEyeInvisible, AiOutlineCheck, AiOutlineClose} from 'react-icons/ai';
-
+import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/ai';
+import useAuth from '../../hooks/useAuth';
+import * as auth from '../../api/auth';
 
 // form initial state
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+[^<>()\.,;:\s@\"]{2,})$/;
+
 
 const Login = () => {
-  const emailRef = useRef();
+  const {setAuth} = useAuth();
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/home";
+
+  const emailRef = useRef();
+  const errRef = useRef();
   const [showPass, setShowPass] = useState(false)
   const classes = useStyles();
 
@@ -31,8 +37,9 @@ const Login = () => {
   const [passwordFocus, setPasswordFocus] = useState(false);
 
   const [email, setEmail] = useState("");
-  const [validEmail, setValidEmail] = useState(false);
   const [emailFocus, setEmailFocus] = useState(false);
+
+  const [errMsg, setErrMsg] = useState("");
 
   
   // capslock is on
@@ -41,9 +48,7 @@ const Login = () => {
     emailRef.current.focus();
   }, [])
 
-  useEffect(() => {
-    setValidEmail(EMAIL_REGEX.test(email));
-  }, [email])
+
 
   const handleCapsLock = (e) => (passwordFocus && e.getModifierState("CapsLock")) ? setCapOn(true) : setCapOn(false);
 
@@ -52,41 +57,61 @@ const Login = () => {
     setShowPass(!showPass);
   }
 
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    setErrMsg("")
 
+    const data = {email, password};
+   
+    try {
+      const res = await auth.login(data);
+
+      const roles = res?.data?.roles;
+      const accessToken = res?.data?.accessToken;
+
+      setAuth({ email, password, roles, accessToken});
+      console.log(email, password, roles, accessToken)
+      navigate(from, {replace:true});
+    }catch(err) {
+      if(!err?.response) {
+        setErrMsg("Ooops, something went wrong");
+      } else if(err.response?.status === 409) {
+        console.log(err.response)
+        setErrMsg(err.response.data.message)
+      } else if(err.response?.status === 404) {
+        setErrMsg(err.response.data.message)
+      } else {
+        setErrMsg("Login Failed");
+      }
+    }
+    
+  }
   return (
-    <Box className={classes.rootContainer} component="div">
+    <Box className={classes.rootContainer} component="section">
       <Box className={classes.contentBox}>
         <Card className={classes.cardContainer} square={true}>
           <CardContent>
             <Typography className={classes.formTitle} variant="h2" fontWeight="bold">
               Sign In
             </Typography>
-            <Box component="form">
+            <Typography variant="subtitle1" color="error" className={classes.errorMessage}>{errMsg}</Typography>
+            <Box onSubmit={handleSubmit} component="form">
               <Box component="div" className={classes.formGroup}>
                 <InputLabel id="email">Email</InputLabel>
                 <TextField 
                   ref={emailRef} 
                   className={classes.textField}
                   value={email}
-                  error={(!validEmail && email) ? true : false}
+                  // error={(!validEmail && email) ? true : false}
                   onChange={(e) => setEmail(e.target.value)}
                   onFocus={() => setEmailFocus(true)}
                   onBlur={() => setEmailFocus(false)}
-                  InputProps={{
-                    endAdornment:(
-                      <InputAdornment position="end">
-                        {(emailFocus && email && !validEmail) && (<AiOutlineClose />)}
-                        {( email && validEmail) && (<AiOutlineCheck color="#63dd73" />)}
-                      </InputAdornment>
-                    )
-                  }}
                   autoComplete="off" 
                   name="email" 
                   id="email" 
                   placeholder="Email"  
                   fullWidth>
                 </TextField>
-                {(emailFocus && email && !validEmail) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>Invalid email address.</Typography>)}
               </Box>
               <Box component="div" className={classes.formGroup}>
                 <InputLabel id="password" name="password">Password</InputLabel>
@@ -94,7 +119,7 @@ const Login = () => {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  error={!password ? true : false}
+                  // error={!password ? true : false}
                   onFocus={() => setPasswordFocus(true)}
                   onBlur={() => setPasswordFocus(false)}
                   onKeyDown={handleCapsLock}
@@ -122,7 +147,7 @@ const Login = () => {
                 {(passwordFocus && capOn ) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>Capslock is on.</Typography>) }
               </Box>
               <Box variant="div" className={classes.btnContainer}>
-                <Button className={classes.btnLogin}>Sign In</Button>
+                <Button type="submit" disabled={(!email || !password) ?  true : false} className={classes.btnLogin}>Sign In</Button>
               </Box>
               <Divider className={classes.divider}>or</Divider>
                 <Box component="div" className={classes.oAuthContainer}>

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { StyledEngineProvider } from '@mui/material/styles';
 import App from './App';
+import {AuthProvider} from '../src/context/AuthProvider';
 import {
   ThemeProvider,
   createTheme,
@@ -19,7 +20,7 @@ const theme = createTheme({
     main:'#60dc6f'
    },
    dark : {
-     main:'#111',
+     main:'#111', 
      light:'#333'
    },
    light : '#fff'
@@ -38,7 +39,9 @@ root.render(
   <React.StrictMode>
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   </React.StrictMode>

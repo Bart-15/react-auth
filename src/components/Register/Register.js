@@ -14,6 +14,8 @@ import {
   Grid
 } from '@mui/material';
 import {AiOutlineEye, AiOutlineEyeInvisible, AiOutlineCheck, AiOutlineClose} from 'react-icons/ai';
+import * as auth from '../../api/auth';
+
 
 
 
@@ -52,9 +54,9 @@ const Register = () => {
   const navigate = useNavigate();
 
 
-  useEffect(() => {
-    userRef.current.focus();
-  }, [])
+  // useEffect(() => {
+  //   userRef.current.focus();
+  // }, [])
 
   // username validation useEffect
   useEffect(() => {
@@ -86,141 +88,183 @@ const Register = () => {
     setShowPass(!showPass);
   }
 
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+
+    const userInput = USER_REGEX.test(user);
+    const passwordInput = PWD_REGEX.test(password);
+
+    if(!userInput || !passwordInput) return setErrMsg("Invalid data.")
+    //procced
+    
+    try {
+        const data = { userName: user, email, password };
+        const res = await auth.register(data);
+
+        console.log(res);
+        setSuccess(true);
+        setUser("");
+        setEmail("");
+        setPassword("");
+        setMatchPassword("");
+    }catch(err) {
+      if(!err?.response) {
+        setErrMsg("Ooops, something went wrong.")
+      } else if (err.response?.status === 409) {
+        console.log(err.response.message)
+      } else {
+        setErrMsg("Registration failed.")
+      }
+
+      errRef.current.focus();
+    }
+  }
+
+  console.log(errMsg)
   return (
-    <Box className={classes.rootContainer} component="div">
+    <Box className={classes.rootContainer} component="section">
       <Box className={classes.contentBox}>
         <Card className={classes.cardContainer} square={true}>
           <CardContent>
-            <Typography className={classes.formTitle} variant="h2" fontWeight="bold">
-              Sign Up
-            </Typography>
-            <Box component="form">
-              <Grid container spacing={1}>
-                <Grid item xs={12} sm={6}>
-                  <InputLabel id="username">Username</InputLabel>
-                  <Box component="div" className={classes.formGrid}>
-                    <TextField 
-                      ref={userRef} 
-                      value={user} 
-                      onChange={(e) => setUser(e.target.value)}
-                      error={(!validUser && user) ? true : false}
-                      onFocus={() => setUserFocus(true)}
-                      onBlur={() => setUserFocus(false)}
+            {
+              success ? (
+              <Typography className={classes.success} variant="subtitle1"> 
+                Account created successfully.<br /> 
+                <Typography variant="p" color="primary" fontWeight="bold" style={{cursor:'pointer'}} onClick={() => navigate('/login')}>Sign In</Typography>
+              </Typography>) :(
+              <>
+                <Typography className={classes.formTitle} variant="h2" fontWeight="bold">
+                  Sign Up
+                </Typography>
+                <Box onSubmit={handleSubmit} component="form">
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} sm={6}>
+                      <InputLabel id="username">Username</InputLabel>
+                      <Box component="div" className={classes.formGrid}>
+                        <TextField 
+                          ref={userRef} 
+                          value={user} 
+                          onChange={(e) => setUser(e.target.value)}
+                          error={(!validUser && user) ? true : false}
+                          onFocus={() => setUserFocus(true)}
+                          onBlur={() => setUserFocus(false)}
+                          InputProps={{
+                            endAdornment:(
+                              <InputAdornment position="end" >
+                                {(userFocus && user && !validUser) && (<AiOutlineClose />)}
+                                {( user && validUser) && (<AiOutlineCheck color="#63dd73" />)}
+                              </InputAdornment>
+                            )
+                          }}
+                          autoComplete="off"
+                          name="username" 
+                          id="username" 
+                          className={classes.textField} 
+                          placeholder="Username" 
+                          fullWidth>
+                        </TextField>
+                        {(userFocus && user && !validUser) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>4 to 24 characters. <br /> Must begin with a letter. <br /> Only accept letters, numbers, underscore and hypens allowed.</Typography>)}
+                      </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Box component="div" className={classes.formGrid}>
+                        <InputLabel id="email">Email</InputLabel>
+                        <TextField 
+                          value={email} 
+                          onChange={(e) => setEmail(e.target.value)}
+                          error={(!validEmail && email) ? true : false}
+                          onFocus={() => setEmailFocus(true)}
+                          onBlur={() => setEmailFocus(false)}
+                          InputProps={{
+                            endAdornment:(
+                              <InputAdornment position="end">
+                                {(emailFocus && email && !validEmail) && (<AiOutlineClose />)}
+                                {( email && validEmail) && (<AiOutlineCheck color="#63dd73" />)}
+                              </InputAdornment>
+                            )
+                          }}
+                          name="email" 
+                          autoComplete="off" 
+                          id="email" 
+                          className={classes.textField} 
+                          placeholder="Email" 
+                          fullWidth>
+                        </TextField>
+                        {(emailFocus && email && !validEmail) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>Invalid email address.</Typography>)}
+                      </Box>
+                    </Grid>
+                  </Grid>
+                  <Box component="div" className={classes.formGroup}>
+                    <InputLabel id="password" name="password">Password</InputLabel>
+                    <TextField
+                      id="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      error={(!validPassword && password) ? true : false}
+                      onFocus={() => setPasswordFocus(true)}
+                      onBlur={() => setPasswordFocus(false)}
+                      onKeyDown={handleCapsLock}
                       InputProps={{
                         endAdornment:(
                           <InputAdornment position="end" >
-                            {(userFocus && user && !validUser) && (<AiOutlineClose />)}
-                            {( user && validUser) && (<AiOutlineCheck color="#63dd73" />)}
-                          </InputAdornment>
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              // onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {showPass ? <AiOutlineEye /> :  <AiOutlineEyeInvisible />}
+                            </IconButton>
+                          </InputAdornment>  
                         )
                       }}
-                      autoComplete="off"
-                      name="username" 
-                      id="username" 
-                      className={classes.textField} 
-                      placeholder="Username" 
-                      fullWidth>
-                    </TextField>
-                    {(userFocus && user && !validUser) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>4 to 24 characters. <br /> Must begin with a letter. <br /> Only accept letters, numbers, underscore and hypens allowed.</Typography>)}
+                      name="password" 
+                      autoComplete="off" 
+                      className={classes.textField}
+                      placeholder="Password" 
+                      type={showPass ? "text" : "password"}
+                      fullWidth
+                    ></TextField>
+                    {(passwordFocus && capOn ) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>Capslock is on.</Typography>) }
+                    {(passwordFocus && password && !validPassword) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>4 to 24 characters. <br /> Must include uppercase and lowercase letters, a number and a special character. <br />  Allowed special characters: # ! @</Typography>)}
                   </Box>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Box component="div" className={classes.formGrid}>
-                    <InputLabel id="email">Email</InputLabel>
-                    <TextField 
-                      value={email} 
-                      onChange={(e) => setEmail(e.target.value)}
-                      error={(!validEmail && email) ? true : false}
-                      onFocus={() => setEmailFocus(true)}
-                      onBlur={() => setEmailFocus(false)}
+                  <Box component="div" className={classes.formGroup}>
+                    <InputLabel id="confirmpPassword" name="confirmPassword">Confirm Password</InputLabel>
+                    <TextField
+                      value={matchPassword}
+                      error={(!validMatch && matchPassword) ? true : false}
+                      onChange={(e) => setMatchPassword(e.target.value)}
+                      onFocus={() => setMatchFocus(true)}
+                      onBlur={() => setMatchFocus(false)}
+                      name="confirmpPassword" 
+                      id="confirmpPassword"
+                      className={classes.textField}
+                      autoComplete="off" 
+                      placeholder="Confirm Password" 
+                      type={showPass ? "text" : "password"}
+                      fullWidth
                       InputProps={{
                         endAdornment:(
-                          <InputAdornment position="end">
-                            {(emailFocus && email && !validEmail) && (<AiOutlineClose />)}
-                            {( email && validEmail) && (<AiOutlineCheck color="#63dd73" />)}
+                          <InputAdornment position="end" >
+                            {(matchFocus && !matchPassword) && (<AiOutlineClose />)}
+                            {( matchPassword && validMatch) && (<AiOutlineCheck color="#63dd73" />)}
                           </InputAdornment>
                         )
                       }}
-                      name="email" 
-                      autoComplete="off" 
-                      id="email" 
-                      className={classes.textField} 
-                      placeholder="Email" 
-                      fullWidth>
-                    </TextField>
-                    {(emailFocus && email && !validEmail) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>Invalid email address.</Typography>)}
+                      ></TextField>
+                      {(matchPassword && !validMatch) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>Password does not match.</Typography>) }
                   </Box>
-                </Grid>
-              </Grid>
-              <Box component="div" className={classes.formGroup}>
-                <InputLabel id="password" name="password">Password</InputLabel>
-                <TextField
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  error={(!validPassword && password) ? true : false}
-                  onFocus={() => setPasswordFocus(true)}
-                  onBlur={() => setPasswordFocus(false)}
-                  onKeyDown={handleCapsLock}
-                  InputProps={{
-                    endAdornment:(
-                      <InputAdornment position="end" >
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          // onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPass ? <AiOutlineEye /> :  <AiOutlineEyeInvisible />}
-                        </IconButton>
-                      </InputAdornment>  
-                    )
-                  }}
-                  name="password" 
-                  autoComplete="off" 
-                  className={classes.textField}
-                  placeholder="Password" 
-                  type={showPass ? "text" : "password"}
-                  fullWidth
-                ></TextField>
-                {(passwordFocus && capOn ) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>Capslock is on.</Typography>) }
-                {(passwordFocus && password && !validPassword) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>4 to 24 characters. <br /> Must include uppercase and lowercase letters, a number and a special character. <br />  Allowed special characters: # ! @</Typography>)}
-              </Box>
-              <Box component="div" className={classes.formGroup}>
-                <InputLabel id="confirmpPassword" name="confirmPassword">Confirm Password</InputLabel>
-                <TextField
-                  value={matchPassword}
-                  error={(!validMatch && matchPassword) ? true : false}
-                  onChange={(e) => setMatchPassword(e.target.value)}
-                  onFocus={() => setMatchFocus(true)}
-                  onBlur={() => setMatchFocus(false)}
-                  name="confirmpPassword" 
-                  id="confirmpPassword"
-                  className={classes.textField}
-                  autoComplete="off" 
-                  placeholder="Confirm Password" 
-                  type={showPass ? "text" : "password"}
-                  fullWidth
-                  InputProps={{
-                    endAdornment:(
-                      <InputAdornment position="end" >
-                        {(matchFocus && !matchPassword) && (<AiOutlineClose />)}
-                        {( matchPassword && validMatch) && (<AiOutlineCheck color="#63dd73" />)}
-                      </InputAdornment>
-                    )
-                  }}
-                  ></TextField>
-                  {(matchPassword && !validMatch) && (<Typography variant="subtitle1" color="error" className={classes.errorMessage}>Password does not match.</Typography>) }
-              </Box>
-              <Box variant="div" className={classes.btnContainer}>
-                <Button className={classes.btnSignup}>Sign Up</Button>
-              </Box>
-            </Box>
-            <Box component="div" className={classes.alreadyAccountsContainer}>
-              <Typography variant="subtitle1" align="center">Already have an account? 
-                  <Typography variant="p" color="primary" fontWeight="bold" style={{cursor:'pointer'}} onClick={() => navigate('/login')}> Sign In</Typography>
-              </Typography>
-            </Box>
+                  <Box variant="div" className={classes.btnContainer}>
+                    <Button type="submit" className={classes.btnSignup} disabled={(!validUser || !validPassword || !validEmail || !validMatch) ? true : false}>Sign Up</Button>
+                  </Box>
+                </Box>
+                <Box component="div" className={classes.alreadyAccountsContainer}>
+                  <Typography variant="subtitle1" align="center">Already have an account? 
+                      <Typography variant="p" color="primary" fontWeight="bold" style={{cursor:'pointer'}} onClick={() => navigate('/login')}> Sign In</Typography>
+                  </Typography>
+                </Box>
+              </>  
+            )}
           </CardContent>
         </Card>
       </Box>
