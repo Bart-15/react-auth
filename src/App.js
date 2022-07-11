@@ -8,7 +8,9 @@ import HomeLayout from '../src/components/Layout/HomeLayout';
 import RequireAuth from './components/RequireAuth/RequireAuth';
 import Unauthorized from './pages/Unauthorized/Unauthorized';
 import Homepage from '../src/pages/Homepage/Homepage';
-import Editor from '../src/pages/Editor/Editor';
+import PersistLogin from './components/PersistLogin/PersistLogin';
+import Students from './components/Student/Students';
+import AddStudent from './components/Student/AddStudent/AddStudent';
 
 const ROLES = {
   'User': parseInt(process.env.REACT_APP_USER_CODE),
@@ -28,17 +30,20 @@ function App() {
           <Route path="/unauthorized" element={<Unauthorized />} />
 
           {/* Protected routes */}
-          <Route element={<HomeLayout allowedRoles={[ROLES.User]} />} >
+          <Route element={<PersistLogin />}>
+            <Route element={<HomeLayout allowedRoles={[ROLES.User]} />} >
 
-            <Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>
-              <Route path="/home" element={<Homepage />} />
-            </Route>
+                  <Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>
+                    <Route path="/home" element={<Homepage />} />
+                  </Route>
 
-            
-            <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Editor]}/>}>
-              <Route path="/editor" element={<Editor />} />
-            </Route>
+                  
+                  <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Editor]}/>}>
+                    <Route path="/student" element={<Students />} />
+                    <Route path="/student/add" element={<AddStudent />} />
+                  </Route>
 
+              </Route>
           </Route>
 
         </Routes>

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import useStyles from '../Register/styles';
-import {useNavigate, Link, useLocation} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import {FaFacebook, FaGithub, FaGoogle} from 'react-icons/fa';
 import { 
   Button, 
