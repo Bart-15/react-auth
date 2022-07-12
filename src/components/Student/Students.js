@@ -1,6 +1,6 @@
 
 import {useState, useEffect} from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useNavigate, useLocation, Link} from 'react-router-dom';
 import {Box, Container, Button, Table, TableBody, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { styled } from '@mui/material/styles';
@@ -89,8 +89,8 @@ const Students = () => {
     return (
     <Box component="div">
       <Container>
-        <Box onClick={handleAdd} className={classes.root} component="div">
-          <Button className={classes.btnSuccess}>Add Student</Button>
+        <Box className={classes.root} component="div">
+          <Button className={classes.btnSuccess} onClick={handleAdd}>Add Student</Button>
           {/* if loading is === true */}
           {(isLoading) && 'loading ...'}
           {
@@ -119,7 +119,9 @@ const Students = () => {
                               <AiFillDelete /> Delete
                             </Button>
                             <Button className={classes.btnSuccess} fontWeight='fontWeightLight'>
-                              <AiFillEdit /> Edit
+                              <Link to={`/student/${student._id}`} style={{textDecoration: 'none', color: 'white'}}>
+                                <AiFillEdit color="#fff"/> Edit
+                              </Link>
                             </Button>
                           </StyledTableCell>
                         </StyledTableRow>

@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import {Container, Typography, Box, Paper, TextField, InputLabel, Button} from '@mui/material';
 import useStyles from '../styles';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import { useNavigate} from 'react-router-dom';
 
 const initialState = {
     name:"",
@@ -9,12 +11,18 @@ const initialState = {
 
 const AddStudent = () => {
     const classes = useStyles();
+
+    const axiosPrivate = useAxiosPrivate();
+
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState(initialState);
 
     const [focusName, setFocusName] = useState(false);
     const [focusLastName, setFocusLastName] = useState(false);
 
     const [errMessage, setErrMsg] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
 
 
     const handleChange = (e) => {
@@ -24,11 +32,28 @@ const AddStudent = () => {
         })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
-
-        
-    }   
+        if(!formData.name || !formData.lastName) return setErrMsg("Check all fields");
+        try {
+        const {data} = await axiosPrivate.post('/students', formData);
+        setSuccessMessage(data?.message);
+        setFormData({
+          name:'',
+          lastName:''
+        });
+        setTimeout(() => {
+          navigate('/students');
+          setErrMsg("")
+        }, 500)
+        }catch(e) {
+          if(e?.response?.status === 500) {
+            setErrMsg("Creation failed")
+          }
+        } 
+    }
+    
+    
 
     return (
         <>
@@ -37,6 +62,7 @@ const AddStudent = () => {
           <Typography variant="h2" className={classes.title}>Add Student</Typography>
             <Paper elevation={12} component="div">
               <Box component="form" className={classes.formContainer} onSubmit={handleSubmit}>
+              <Typography variant="subtitle" color="primary">{successMessage && successMessage}</Typography>
                 <Box component="div" className={classes.formGroup}>
                   <InputLabel id="name">Name</InputLabel> 
                   <TextField 

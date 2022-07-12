@@ -1,4 +1,3 @@
-import React from 'react'
 import {useNavigate} from 'react-router-dom';
 import {Container, Grid, CardMedia, Typography, Box, Button} from '@mui/material';
 import unAuth from '../../assets/images/un_auth.jpg';

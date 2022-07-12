@@ -21,6 +21,8 @@ const NavBar = () => {
             <Typography variant="subtitle1" className={classes.logo}>JWT AUTH</Typography>
           </Box>
           <Box classsName={classes.rightLinks}>
+            <Button className={classes.routeBtn} onClick={() => navigate('/home')}>Home</Button>
+            <Button className={classes.routeBtn} onClick={() => navigate('/students')}>Students</Button>
             <Button onClick={handleLogout} className={classes.logoutBtn}>Logout</Button>
           </Box>
         </Box>

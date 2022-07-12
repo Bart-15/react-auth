@@ -11,6 +11,8 @@ import Homepage from '../src/pages/Homepage/Homepage';
 import PersistLogin from './components/PersistLogin/PersistLogin';
 import Students from './components/Student/Students';
 import AddStudent from './components/Student/AddStudent/AddStudent';
+import EditStudent from './components/Student/EditStudent/StudentItem';
+import NotFound from '../src/pages/NotFound/NotFound';
 
 const ROLES = {
   'User': parseInt(process.env.REACT_APP_USER_CODE),
@@ -39,13 +41,15 @@ function App() {
 
                   
                   <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.Editor]}/>}>
-                    <Route path="/student" element={<Students />} />
+                    <Route path="/students" element={<Students />} />
                     <Route path="/student/add" element={<AddStudent />} />
+                    <Route path="/student/:id" element={<EditStudent />} />
                   </Route>
 
               </Route>
-          </Route>
+          </Route> {/* end protected routes */}
 
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </div>

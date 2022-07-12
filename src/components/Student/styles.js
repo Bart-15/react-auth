@@ -13,8 +13,9 @@ export default makeStyles((theme) => ({
       color:theme.pallete.light,
       borderRadius:'20px',
       marginRight:'12px',
-      
+      padding:'10px 20px',
 
+      
       '&:hover' : {
         background:red[500]
       }

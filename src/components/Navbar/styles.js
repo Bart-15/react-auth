@@ -44,5 +44,11 @@ export default makeStyles((theme) => ({
         '&:hover' : {
             background:theme.pallete.primary.light,
         }
+    },
+
+    routeBtn : {
+        color:theme.pallete.light,
+        background:'transparent',
+        fontSize:'14px',
     }
 }));
