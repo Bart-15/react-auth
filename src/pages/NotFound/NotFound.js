@@ -46,7 +46,7 @@ const NotFound = () => {
       isMounted =  false;
       controller.abort();
     }
-
+    
   }, [])
 
 

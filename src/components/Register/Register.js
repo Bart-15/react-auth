@@ -90,6 +90,7 @@ const Register = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
+    setErrMsg("");
 
     const userInput = USER_REGEX.test(user);
     const passwordInput = PWD_REGEX.test(password);
@@ -111,7 +112,8 @@ const Register = () => {
       if(!err?.response) {
         setErrMsg("Ooops, something went wrong.")
       } else if (err.response?.status === 409) {
-        console.log(err.response.message)
+        setErrMsg(err.response?.data?.message)
+        // console.log(err.response?.data?.message)
       } else {
         setErrMsg("Registration failed.")
       }
@@ -128,14 +130,15 @@ const Register = () => {
           <CardContent>
             {
               success ? (
-              <Typography className={classes.success} variant="subtitle1"> 
+                <Typography className={classes.success} variant="subtitle1"> 
                 Account created successfully.<br /> 
                 <Typography variant="p" color="primary" fontWeight="bold" style={{cursor:'pointer'}} onClick={() => navigate('/login')}>Sign In</Typography>
               </Typography>) :(
-              <>
+                <>
                 <Typography className={classes.formTitle} variant="h2" fontWeight="bold">
                   Sign Up
                 </Typography>
+                {errMsg ? <Typography className={classes.errorMessage}>{errMsg}</Typography> : ""}
                 <Box onSubmit={handleSubmit} component="form">
                   <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>

@@ -94,6 +94,7 @@ export default makeStyles((theme) => ({
     errorMessage : {
         fontSize:'11px',
         fontWeight:'bold',
+        color:'red'
     }
 
 }))

@@ -23,6 +23,7 @@ const NavBar = () => {
           <Box classsName={classes.rightLinks}>
             <Button className={classes.routeBtn} onClick={() => navigate('/home')}>Home</Button>
             <Button className={classes.routeBtn} onClick={() => navigate('/students')}>Students</Button>
+            <Button className={classes.routeBtn} onClick={() => navigate('/users')}>Users</Button>
             <Button onClick={handleLogout} className={classes.logoutBtn}>Logout</Button>
           </Box>
         </Box>
