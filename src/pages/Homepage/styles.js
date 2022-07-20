@@ -18,5 +18,21 @@ export default makeStyles((theme) => ({
 
     link : {
         textDecoration:'none'
+    },
+
+    [theme.breakpoints.up('sm')]:{
+        txt:{
+            '& span': {
+                fontSize:'14px'
+            }
+        }
+    },
+
+    [theme.breakpoints.up('md')]:{
+        txt:{
+            '& span': {
+                fontSize:'16px'
+            }
+        }
     }
 }))

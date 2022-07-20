@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom';
-import {Container, Button, Typography} from '@mui/material';
+import {Container, Button, Typography, Grid, List, ListItem, ListItemText} from '@mui/material';
 import useStyles from './styles';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
@@ -41,12 +40,25 @@ const Homepage = () => {
   return (
     <Container>
       <Typography variant="h3" className={classes.homeTitle}>Welcome back, {data.userName}</Typography>
-      <Typography variant="h4">What does the app do?</Typography>
-      <Typography variant="subtile1">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</Typography>
-
-
+      <Typography variant="h4">What does the app do?🚀</Typography>
+      <Grid container>
+        <Grid item>
+          <List>
+            <ListItem>
+              <ListItemText className={classes.txt}>🔥 Super admin can create, read, update and delete the student's data and also, super admin has a right to change the roles of every user.</ListItemText>
+            </ListItem>
+            <ListItem>
+              <ListItemText className={classes.txt}>👤 Ordinary user can't visit the students and other protected routes.</ListItemText>
+            </ListItem>
+            <ListItem>
+              <ListItemText className={classes.txt}>👀 The editor can do CRUD operations in the student's route, but only the super admin does have access to user routes.</ListItemText>
+            </ListItem>
+          </List>
+        </Grid>
+      </Grid>
     </Container>
   )
 }
+
 
 export default Homepage;

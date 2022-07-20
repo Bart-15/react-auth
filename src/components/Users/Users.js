@@ -70,10 +70,6 @@ const Users = () => {
   }, [])
 
 
-  const handleDelete = () => {
-    console.log('low')
-  }
-
   const fetchRoles = (roles) => {
     let result = [];
     for(let x in roles) {
@@ -84,12 +80,11 @@ const Users = () => {
   }
 
     return ( 
-        <>
-         <Container>
-         <Box component="div">
+  <>
+  <Container>
+    <Box component="div">
       <Container>
         <Box className={classes.root} component="div">
-          <Button className={classes.btnSuccess}>Add Student</Button>
           {/* if loading is === true */}
           {(isLoading) && 'loading ...'}
           {
@@ -116,11 +111,11 @@ const Users = () => {
                           <StyledTableCell align="left">{user.email}</StyledTableCell>
                           <StyledTableCell align="left">{fetchRoles(user.roles)}</StyledTableCell>
                           <StyledTableCell align="left">
-                            <Button className={classes.btnSuccess} fontWeight='fontWeightLight'>
                               <Link to={`/user/${user._id}`} style={{textDecoration: 'none', color: 'white'}}>
-                                <AiFillEdit color="#fff"/> Edit Roles
+                                <Button className={classes.btnSuccess} fontWeight='fontWeightLight'>
+                                    <AiFillEdit color="#fff"/> Edit Roles
+                                </Button>
                               </Link>
-                            </Button>
                           </StyledTableCell>
                         </StyledTableRow>
                       ))}
@@ -133,9 +128,8 @@ const Users = () => {
         </Box>
       </Container>
     </Box>
-         </Container>
-        </>
-     );
+  </Container>
+  </>
+  );
 }
- 
 export default Users;

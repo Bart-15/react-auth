@@ -53,11 +53,6 @@ const Register = () => {
   const classes = useStyles();
   const navigate = useNavigate();
 
-
-  // useEffect(() => {
-  //   userRef.current.focus();
-  // }, [])
-
   // username validation useEffect
   useEffect(() => {
     setValidUser(USER_REGEX.test(user));
