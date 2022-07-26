@@ -12,18 +12,18 @@ import {
 
 const theme = createTheme({
   pallete : {
-   primary : {
-    main: '#4491de',
-    light : '#399cff'
-   },
-   success : {
-    main:'#60dc6f'
-   },
-   dark : {
-     main:'#111', 
-     light:'#333'
-   },
-   light : '#fff'
+    primary : {
+      main: '#4491de',
+      light : '#399cff'
+    },
+    success : {
+      main:'#60dc6f'
+    },
+    dark : {
+      main:'#111', 
+      light:'#333'
+    },
+    light : '#fff'
   },
   typography: {
     "fontFamily": `'Montserrat', sans-serif`,

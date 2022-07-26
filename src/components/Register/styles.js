@@ -9,7 +9,7 @@ export default makeStyles((theme) => ({
         background:theme.pallete.primary.light,
         color:theme.pallete.light
     },
-     
+    
     contentBox : {
         transision:'.4s ease-in-out',
         padding:'100px 20px',
@@ -31,7 +31,7 @@ export default makeStyles((theme) => ({
     },
 
     formGroup : {
-      padding:'10px 0',  
+        padding:'10px 0',  
     },
 
     formGrid : {
@@ -95,6 +95,10 @@ export default makeStyles((theme) => ({
         fontSize:'11px',
         fontWeight:'bold',
         color:'red'
-    }
+    },
 
+    resetLink : {
+        textDecoration:'none',
+        textAlign:'center'
+    }
 }))

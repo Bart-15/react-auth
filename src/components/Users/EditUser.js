@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import useAxiosPrivate from  '../../hooks/useAxiosPrivate';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import {Container, Typography, Paper, Box, Checkbox, FormControlLabel, Button} from '@mui/material';
+import Spinner from '../Spinner/Spinner';
 import useStyles from './styles';
 
 const EditUser = ({roles}) => {
@@ -72,19 +73,6 @@ const EditUser = ({roles}) => {
 
     }, [])
 
-
-    
-        
-    const fetchRoles = (roles) => {
-        let result = [];
-        for(let x in roles) {
-        result.push(x);
-        }
-
-        return result.join(', ');
-    }
-
-
     useEffect(() => {
         if(adminChecked){
             let newRoles = Object.assign({}, userRoles, {"Admin": 3000});
@@ -145,13 +133,13 @@ const EditUser = ({roles}) => {
             <Container>
                 <Typography variant="h3">Edit roles</Typography>
                 {
-                    (!data || isLoading) ? "Loading ..." : (
+                    (data.length < 0 || isLoading) ? (<Spinner />) : (
                         <Paper elevation={12} component="div">
                             <Box component="div" className={classes.container}>
                                 {successMsg && <Typography variant="subtile1" className={classes.successMsg}>{successMsg}</Typography>}
                                 <Typography variant="subtitle1">Username: {data?.userName}</Typography>
                                 <Typography variant="subtitle1">Email: {data?.email}</Typography>
-                                <Typography variant="subtitle1">Current Role: {fetchRoles(data?.roles)}</Typography>
+                                <Typography variant="subtitle1">Current Role:{data?.roles && Object.keys(data?.roles).join(',')} </Typography>
                                 <Box component="form" onSubmit={handleSubmit}>
                                 <FormControlLabel 
                                     disabled={true}

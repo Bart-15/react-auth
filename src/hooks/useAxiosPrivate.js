@@ -20,18 +20,18 @@ const useAxiosPrivate = () => {
     );
 
     const responseIntercept = axiosPrivate.interceptors.response.use(
-       response => response,
-       async(error) => {
-          const prevReq = error?.config;
-          if(error?.response?.status === 403 && !prevReq?.sent) {
-             prevReq.sent = true;
-             const newAccessToken = await refresh();
-             prevReq.headers['Authorization'] = `Bearer ${newAccessToken}`;
-             return axiosPrivate(prevReq);
-          }
+        response => response,
+        async(error) => {
+            const prevReq = error?.config;
+            if(error?.response?.status === 403 && !prevReq?.sent) {
+                prevReq.sent = true;
+                const newAccessToken = await refresh();
+                prevReq.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                return axiosPrivate(prevReq);
+            }
 
-          return Promise.reject(error);
-       }
+            return Promise.reject(error);
+        }
     );
     
     //clean up

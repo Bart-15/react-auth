@@ -2,9 +2,10 @@ import {makeStyles} from '@mui/styles';
 
 export default makeStyles((theme) => ({
     navRoot : {
-      width: '100%',
-      background:theme.pallete.primary.main,
-      height:'88px'
+        width: '100%',
+        background:theme.pallete.primary.main,
+        height:'88px',
+        position:'relative',
     },
 
     navContainer : {
@@ -17,6 +18,10 @@ export default makeStyles((theme) => ({
 
     },
 
+    rightLinks : {
+        transition:'.4s ease-in-out'
+    },
+
     logoContainer : {
         display:'flex',
         flexDirection: 'column',
@@ -26,11 +31,11 @@ export default makeStyles((theme) => ({
     },
 
     logo : {
-      fontSize:'18px',
-      margin:'0 20px',
-      color:theme.pallete.light,
-      fontWeight:theme.typography.fontWeightRegular,
-      letterSpacing:'1px'
+        fontSize:'18px',
+        margin:'0 20px',
+        color:theme.pallete.light,
+        fontWeight:theme.typography.fontWeightRegular,
+        letterSpacing:'1px'
     },
 
     logoutBtn : {
@@ -50,5 +55,13 @@ export default makeStyles((theme) => ({
         color:theme.pallete.light,
         background:'transparent',
         fontSize:'14px',
-    }
+    },
+
+    menuIcon : {
+        padding:'26px 10px',
+        color:'#fff',
+        transition:'.4s ease-in-out'
+    },
+
+
 }));

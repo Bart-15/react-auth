@@ -1,13 +1,12 @@
 import {Outlet} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import useRefreshToken from '../../hooks/useRefreshToken';
-import axios, {axiosPrivate} from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
-
+import {Spinner} from '../../components'
 const PersistLogin = () => {
     const [isLoading, setLoading] = useState(true);
     const refresh = useRefreshToken();
-    const {auth, setAuth} = useAuth();
+    const {auth} = useAuth();
 
 
     useEffect(() => {
@@ -36,7 +35,7 @@ const PersistLogin = () => {
     return (
         <>
         {
-            isLoading ? <p>Loading ...</p> : <Outlet />
+            isLoading ? (<Spinner />) : <Outlet />
         }
         </>
     )
