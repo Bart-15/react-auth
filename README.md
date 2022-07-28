@@ -36,15 +36,14 @@ REACT_APP_BASE_URL=
 
 
 ## Features
-
-  > Login 
-  > Register
-  > Reset Password
-  > Change roles (User route)
-  > CRUD (Student route)
-  > Protected Routes
-  > Custom Hooks
-  > Routing
-  > Context for authentication.
+>Login 
+>Register
+>Reset Password
+>Change roles (User route)
+>CRUD (Student route)
+>Protected Routes
+>Custom Hooks
+>Routing
+>Context for authentication.
 
 
