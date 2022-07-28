@@ -10,10 +10,13 @@ import {
     InputLabel, 
 } from '@mui/material';
 import useStyles from '../../components/Register/styles';
+import useTitle from '../../hooks/useTitle';
 
 
 
 const ForgotPassword = () => {
+    useTitle("Forgot Password");
+
     const classes = useStyles();
     const emailRef = useRef();
 
@@ -67,7 +70,7 @@ const ForgotPassword = () => {
                         Forgot Password
                     </Typography>
                     {isMessage && (<Typography variant="subtitle1" color={isError ? "error" : "dark"} fontWeight="bold">{isMessage}</Typography>)}
-                    <Typography variant="subtile1">Enter your email address and we will send you a link to reset your password."</Typography> 
+                    <Typography variant="subtile1">Enter your email address and we will send you a link to reset your password.</Typography> 
                     <Box component="form" onSubmit={resetPassword}>
                         <Box component="div" className={classes.formGroup}>
                             <InputLabel id="email">Email</InputLabel>

@@ -41,8 +41,6 @@ function App() {
 			<Route path="/reset" element={<ForgotPassword />} />
 			<Route path="/password/reset/:userId/:token" element={<ResetPassword />} />
 
-
-
 			{/* Protected routes */}
 			<Route element={<PersistLogin />}>
 				<Route path="/register" element={<Register />} />

@@ -6,13 +6,12 @@ export default makeStyles((theme) => ({
         width:'100%',
         margin:'0 auto',
         height :'100vh',
-        background:theme.pallete.primary.light,
         color:theme.pallete.light
     },
     
     contentBox : {
-        transision:'.4s ease-in-out',
-        padding:'100px 20px',
+        transition:'.4s ease-in-out',
+        padding:'86px 20px 0',
         margin:'0 auto',
         maxWidth:'1200px',
     },
@@ -32,6 +31,7 @@ export default makeStyles((theme) => ({
 
     formGroup : {
         padding:'10px 0',  
+        
     },
 
     formGrid : {

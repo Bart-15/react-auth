@@ -45,5 +45,9 @@ export default makeStyles((theme) => ({
 
 	formContainer : {
 		padding:'20px 40px'
+	},
+
+	rootPaper : {
+		margin:'10px 0'
 	}
 }))

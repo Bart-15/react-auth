@@ -2,6 +2,7 @@ import {useState} from 'react';
 import {Container, Typography, Box, Paper, TextField, InputLabel, Button} from '@mui/material';
 import useStyles from '../styles';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import useTitle from '../../../hooks/useTitle';
 import { useNavigate} from 'react-router-dom';
 
 const initialState = {
@@ -10,6 +11,8 @@ const initialState = {
 }
 
 const AddStudent = () => {
+	useTitle("Add Student")
+
 	const classes = useStyles();
 
 	const axiosPrivate = useAxiosPrivate();

@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useTitle from '../../hooks/useTitle';
 import {useNavigate, useLocation, Link} from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import {Box, Container, Button, Table, TableBody, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
@@ -32,6 +33,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 
 const Users = () => {
+	useTitle("Users List")
+
 	const [users, setUsers] = useState([]);
 	const [isLoading, setLoading] = useState(false);
 

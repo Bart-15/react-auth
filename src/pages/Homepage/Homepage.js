@@ -3,8 +3,11 @@ import {Container, Typography, Grid, List, ListItem, ListItemText} from '@mui/ma
 import Spinner from '../../components/Spinner/Spinner';
 import useStyles from './styles';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useTitle from '../../hooks/useTitle';
 
 const Homepage = () => {
+  useTitle("Home Page")
+
   const classes = useStyles(); 
   const [isLoading, setLoading] = useState(false);
   const [data, setData] = useState({});

@@ -15,7 +15,7 @@ const PersistLogin = () => {
                 await refresh();
 
             }catch(error) {
-                console.log(error)
+                console.error(error)
             } finally {
                 setLoading(false);
             }
@@ -25,8 +25,7 @@ const PersistLogin = () => {
     }, [])
 
     useEffect(() => {
-        console.log(`isLoading: ${isLoading}`);
-        console.log(`auth data: ${JSON.stringify(auth)}`);
+
 
     }, [isLoading]);
 

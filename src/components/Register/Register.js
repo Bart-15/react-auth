@@ -16,6 +16,7 @@ import {
 import {AiOutlineEye, AiOutlineEyeInvisible, AiOutlineCheck, AiOutlineClose} from 'react-icons/ai';
 import * as api from '../../api/auth';
 import useAuth from '../../hooks/useAuth';
+import useTitle from '../../hooks/useTitle';
 
 
 
@@ -25,6 +26,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()\.,;\s@\"]+\.{0,1})+[^<>()\.,;:\s@\"]{2,})$/;
 
 const Register = () => {
+	useTitle("Register")
 	const {auth} = useAuth();
 
 	const userRef = useRef();
@@ -110,7 +112,6 @@ const Register = () => {
 			const data = { userName: user, email, password };
 			const res = await api.register(data);
 
-			console.log(res);
 			setSuccess(true);
 			setUser("");
 			setEmail("");
@@ -130,7 +131,6 @@ const Register = () => {
 		}
 	}
 
-	console.log(errMsg)
 	return (
 		<Box className={classes.rootContainer} component="section">
 		<Box className={classes.contentBox}>

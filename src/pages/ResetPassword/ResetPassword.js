@@ -15,10 +15,13 @@ import {
 import {AiOutlineEye, AiOutlineEyeInvisible, AiOutlineCheck, AiOutlineClose} from 'react-icons/ai';
 import useStyles from '../../components/Register/styles';
 import * as auth from '../../api/auth';
+import useTitle from '../../hooks/useTitle';
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const ResetPassword = () => {
+    useTitle("Reset Password");
+
     const classes = useStyles();
     const {userId, token} = useParams();
 

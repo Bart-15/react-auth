@@ -8,6 +8,7 @@ import useStyles from './styles'
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import {AiFillDelete, AiFillEdit} from 'react-icons/ai';
 import Spinner from '../Spinner/Spinner';
+import useTitle from '../../hooks/useTitle';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
@@ -31,6 +32,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 const Students = () => {
+	useTitle("Students List")
+
 	const classes = useStyles();
 
 	const navigate = useNavigate();

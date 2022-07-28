@@ -1,11 +1,14 @@
 import {useState, useEffect} from 'react';
 import useAxiosPrivate from  '../../hooks/useAxiosPrivate';
+import useTitle from '../../hooks/useTitle';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import {Container, Typography, Paper, Box, Checkbox, FormControlLabel, Button} from '@mui/material';
 import Spinner from '../Spinner/Spinner';
 import useStyles from './styles';
 
 const EditUser = ({roles}) => {
+    useTitle("Edit Roles")
+
     let { id } = useParams();
 
     const classes = useStyles();
@@ -75,7 +78,7 @@ const EditUser = ({roles}) => {
 
     useEffect(() => {
         if(adminChecked){
-            let newRoles = Object.assign({}, userRoles, {"Admin": 3000});
+            let newRoles = Object.assign({}, userRoles, {"Admin": roles?.Admin});
             setUserRoles(newRoles);
         } else {
         setUserRoles(current => {
@@ -89,28 +92,28 @@ const EditUser = ({roles}) => {
 
     useEffect(() => {
         if(editorChecked){
-            let newRoles = Object.assign({}, userRoles, {"Editor": 4000});
+            let newRoles = Object.assign({}, userRoles, {"Editor": roles?.Editor});
             setUserRoles(newRoles);
         } else {
-        setUserRoles(current => {
-            const copy = {...current};
-            delete copy['Editor'];
-            return copy;
-        })
-    }
+            setUserRoles(current => {
+                const copy = {...current};
+                delete copy['Editor'];
+                return copy;
+            })
+        }
 
     }, [editorChecked])
 
     useEffect(() => {
         if(userChecked){
-            let newRoles = Object.assign({}, userRoles, {"User": 5000});
+            let newRoles = Object.assign({}, userRoles, {"User": roles?.User});
             setUserRoles(newRoles);
         } else {
-        setUserRoles(current => {
-            const copy = {...current};
-            delete copy['Editor'];
-            return copy;
-        })
+            setUserRoles(current => {
+                const copy = {...current};
+                delete copy['Editor'];
+                return copy;
+            })
         }
 
     }, [userChecked])
@@ -128,18 +131,19 @@ const EditUser = ({roles}) => {
             console.log(e?.message)
         }
     }
+
     return ( 
         <>
             <Container>
-                <Typography variant="h3">Edit roles</Typography>
+                <Typography variant="h4" className={classes.title}>Edit roles</Typography>
                 {
                     (data.length < 0 || isLoading) ? (<Spinner />) : (
-                        <Paper elevation={12} component="div">
+                        <Paper elevation={12} component="div" className={classes.rootPaper}>
                             <Box component="div" className={classes.container}>
                                 {successMsg && <Typography variant="subtile1" className={classes.successMsg}>{successMsg}</Typography>}
                                 <Typography variant="subtitle1">Username: {data?.userName}</Typography>
                                 <Typography variant="subtitle1">Email: {data?.email}</Typography>
-                                <Typography variant="subtitle1">Current Role:{data?.roles && Object.keys(data?.roles).join(',')} </Typography>
+                                <Typography variant="subtitle1">Current Role: {data?.roles && Object.keys(data?.roles).join(',')} </Typography>
                                 <Box component="form" onSubmit={handleSubmit}>
                                 <FormControlLabel 
                                     disabled={true}

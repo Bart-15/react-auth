@@ -4,8 +4,12 @@ import {Container, Grid, CardMedia, Typography, Box, Button} from '@mui/material
 import notFound from '../../assets/images/notFound.png';
 import useStyles from '../Unauthorized/styles';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useTitle from '../../hooks/useTitle';
+
 
 const NotFound = () => {
+    useTitle("404 - Not Found")
+
     const classes = useStyles();
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();

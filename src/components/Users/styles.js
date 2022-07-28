@@ -19,5 +19,13 @@ export default makeStyles((theme) => ({
         color:red[700],
         padding:'10px 0',
         fontWeight:'bold'
+    },
+
+    rootPaper : {
+        margin:'10px 0'
+    },
+
+    title : {
+        padding:'5px 0'
     }
 }))

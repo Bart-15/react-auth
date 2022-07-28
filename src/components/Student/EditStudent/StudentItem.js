@@ -1,8 +1,10 @@
 import {useState, useEffect} from 'react';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import useTitle from '../../../hooks/useTitle';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import {Container, Typography, Box, Paper, TextField, InputLabel, Button} from '@mui/material';
 import useStyles from '../styles';
+import {Spinner} from '../../../components'
 
 const initialState = {
 	name:"",
@@ -10,6 +12,8 @@ const initialState = {
 }
 
 const EditStudent = () => {
+	useTitle("Edit Student");
+
 	let { id } = useParams();
 
 	const classes = useStyles();
@@ -78,29 +82,28 @@ const EditStudent = () => {
 		e.preventDefault();
 		if(!formData.name || !formData.lastName) return setErrMsg("Check all fields");
 		try {
-		const {data} = await axiosPrivate.patch(`/student/${id}`, formData);
-		setSuccessMessage(data?.message);
-		setFormData({
-			name:'',
-			lastName:''
-		});
-		setTimeout(() => {
-			navigate('/students');
-			setErrMsg("")
-		}, 500)
+			const {data} = await axiosPrivate.patch(`/student/${id}`, formData);
+			setSuccessMessage(data?.message);
+			setFormData({
+				name:'',
+				lastName:''
+			});
+			setTimeout(() => {
+				navigate('/students');
+				setErrMsg("")
+			}, 500)
 		}catch(e) {
-		if(e?.response?.status === 500) {
-			setErrMsg("Update failed")
+			if(e?.response?.status === 500) {
+				setErrMsg("Update failed")
+			}
 		}
-		}
-		console.log('#######', formData)
 	}
 
 	return ( 
 		<>
 		<Container>
 		<Box component="div">
-			{(!formData || isLoading) ? "Loading..." : (
+			{(!formData || isLoading) ? (<Spinner />) : (
 			<>
 			<Typography variant="h2" className={classes.title}>Edit Student</Typography>
 				<Paper elevation={12} component="div">

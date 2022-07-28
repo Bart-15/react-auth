@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import {AiOutlineEye, AiOutlineEyeInvisible} from 'react-icons/ai';
 import useAuth from '../../hooks/useAuth';
+import useTitle from '../../hooks/useTitle';
 import * as api from '../../api/auth';
 
 // form initial state
@@ -21,7 +22,8 @@ import * as api from '../../api/auth';
 
 const Login = () => {
 	const {auth, setAuth} = useAuth();
-
+	useTitle("Login");
+	
 	const navigate = useNavigate();
 	const location = useLocation();
 	const from = location.state?.from?.pathname || "/home";
@@ -62,35 +64,33 @@ const Login = () => {
 	}
 
 	const handleSubmit = async(e) => {
-	e.preventDefault();
-	setErrMsg("")
+		e.preventDefault();
+		setErrMsg("")
 
-	const data = {email, password};
-	
-	try {
-		const res = await api.login(data);
+		const data = {email, password};
+		
+		try {
+			const res = await api.login(data);
 
-		const roles = res?.data?.roles;
-		const accessToken = res?.data?.accessToken;
+			const roles = res?.data?.roles;
+			const accessToken = res?.data?.accessToken;
 
-		setAuth({ email, password, roles, accessToken});
-		console.log(email, password, roles, accessToken)
-		navigate(from, {replace:true});
-	}catch(err) {
-		if(!err?.response) {
-		setErrMsg("Ooops, something went wrong");
-		} else if(err.response?.status === 409) {
-		console.log(err.response)
-		setErrMsg(err.response.data.message)
-		} else if(err.response?.status === 404) {
-		setErrMsg(err.response.data.message)
-		} else {
-		setErrMsg("Login Failed");
-		}
+			setAuth({ email, password, roles, accessToken});
+			navigate(from, {replace:true});
+		}catch(err) {
+			if(!err?.response) {
+				setErrMsg("Ooops, something went wrong");
+			} else if(err.response?.status === 409) {
+				setErrMsg(err.response.data.message)
+			} else if(err.response?.status === 404) {
+				setErrMsg(err.response.data.message)
+			} else {
+				setErrMsg("Login Failed");
+			}
+		}	
 	}
-	
-	}
-	console.log("#####data", auth)
+
+
 	return (
 	<Box className={classes.rootContainer} component="section">
 		<Box className={classes.contentBox}>

@@ -2,7 +2,7 @@ import {makeStyles} from '@mui/styles';
 
 export default makeStyles((theme) => ({
     rootContainer: {
-       padding:'40px 20px',
+        padding:'40px 20px',
 
     },
     
