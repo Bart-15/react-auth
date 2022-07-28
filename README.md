@@ -29,10 +29,10 @@ This is my simple implementation of JWT auth with refresh token using the MERN s
 
 Open the .env and paste this.
 
-REACT_APP_USER_CODE=
-REACT_APP_EDITOR_CODE=
-REACT_APP_ADMIN_CODE=
-REACT_APP_BASE_URL=
+REACT_APP_USER_CODE= <br />
+REACT_APP_EDITOR_CODE= <br />
+REACT_APP_ADMIN_CODE= <br />
+REACT_APP_BASE_URL= <br />
 
 
 ## Features
